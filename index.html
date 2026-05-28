@@ -18,14 +18,14 @@ body.light{background:#f5f7fb;color:#0f172a;}
 .card-light{background:#fff;border:1px solid rgba(0,0,0,.06);}
 .item-dark{background:#1d2129;border:1px solid rgba(255,255,255,.05);}
 .item-light{background:#f8fafc;border:1px solid rgba(0,0,0,.05);}
-.fade-up{animation:fadeUp .4s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .scrollbar::-webkit-scrollbar{width:5px;}
 .scrollbar::-webkit-scrollbar-thumb{background:#475569;border-radius:999px;}
-.drop-zone{border:2px dashed rgba(236,72,153,.4);transition:all .2s;}
-.drop-zone.dragover{border-color:#ec4899;background:rgba(236,72,153,.07);}
+.drop-zone{border:2px dashed rgba(236,72,153,.35);transition:all .2s;}
+.drop-zone.dragover{border-color:#ec4899;background:rgba(236,72,153,.06);}
 input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;}
-.tab-btn{transition:all .2s;border-bottom:2px solid transparent;cursor:pointer;}
+.tab-btn{transition:all .2s;border-bottom:2px solid transparent;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;}
 .tab-btn.active{border-bottom-color:#ec4899;color:#ec4899;}
 </style>
 </head>
@@ -48,11 +48,10 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
     </div>
   </header>
 
-  <!-- MAIN CARD -->
+  <!-- MAIN -->
   <main id="mainCard" class="glass-dark rounded-[28px] p-5 md:p-8 fade-up">
 
     <div class="grid lg:grid-cols-2 gap-10 items-start mb-8">
-      <!-- LEFT -->
       <div>
         <div class="inline-flex items-center gap-2 bg-pink-500/10 text-pink-400 px-3 py-1.5 rounded-full text-xs font-medium mb-4">
           <i class="fa-solid fa-chart-simple"></i> Instagram Analytics
@@ -69,7 +68,6 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
         </div>
       </div>
 
-      <!-- RIGHT: UPLOAD -->
       <div>
         <label id="dropZone" class="drop-zone rounded-[24px] p-6 text-center cursor-pointer block transition hover:scale-[1.01]">
           <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg shadow-pink-500/20">
@@ -77,7 +75,7 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
           </div>
           <h3 class="text-lg font-bold mb-1">Upload File JSON</h3>
           <p class="text-slate-500 text-xs mb-5">Drag &amp; drop atau klik untuk pilih file — multiple files OK</p>
-          <div class="inline-flex items-center gap-2 bg-pink-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-pink-600 transition pointer-events-none">
+          <div class="inline-flex items-center gap-2 bg-pink-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm pointer-events-none">
             <i class="fa-solid fa-folder-open"></i> Pilih File
           </div>
           <input type="file" id="jsonFiles" accept=".json" multiple class="hidden"/>
@@ -86,10 +84,8 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
       </div>
     </div>
 
-    <!-- FILE LIST -->
     <div id="fileList" class="grid md:grid-cols-2 gap-3 mb-6 hidden"></div>
 
-    <!-- ANALYZE BUTTON -->
     <button id="analyzeBtn" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 rounded-2xl text-base font-bold hover:opacity-90 active:scale-[.99] transition shadow-xl shadow-pink-500/20">
       <i class="fa-solid fa-magnifying-glass mr-2"></i> Analisa Sekarang
     </button>
@@ -97,7 +93,6 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
     <!-- RESULT -->
     <section id="resultSection" class="hidden mt-8 fade-up">
 
-      <!-- STATS -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <div class="bg-pink-500/10 border border-pink-500/15 rounded-2xl p-4">
           <div class="text-xs text-slate-400 mb-1">Tidak Follow Balik</div>
@@ -117,48 +112,44 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
         </div>
       </div>
 
-      <!-- FILTER & SORT -->
       <div class="flex flex-col md:flex-row gap-3 mb-5">
         <input type="text" id="searchInput" placeholder="🔍  Cari username..."
           class="flex-1 dark:bg-[#17191f] bg-white border dark:border-white/5 border-black/5 rounded-xl px-4 py-3 text-sm transition"/>
-        <select id="sortSelect"
-          class="dark:bg-[#17191f] bg-white border dark:border-white/5 border-black/5 rounded-xl px-4 py-3 text-sm">
+        <select id="sortSelect" class="dark:bg-[#17191f] bg-white border dark:border-white/5 border-black/5 rounded-xl px-4 py-3 text-sm">
+          <option value="newest">Terbaru follow dulu</option>
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>
-          <option value="newest">Terbaru dulu</option>
         </select>
       </div>
 
-      <!-- TABS -->
       <div class="flex gap-4 border-b border-white/5 mb-5 overflow-x-auto">
         <button class="tab-btn active text-sm font-semibold pb-3 px-1 whitespace-nowrap" data-tab="notback">
           Tidak Follow Balik
-          <span id="tabBadgeNotBack" class="ml-1 text-xs bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full">0</span>
+          <span id="badgeNotBack" class="ml-1 text-xs bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full">0</span>
         </button>
         <button class="tab-btn text-sm font-semibold pb-3 px-1 text-slate-400 whitespace-nowrap" data-tab="mutual">
           Mutual
-          <span id="tabBadgeMutual" class="ml-1 text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">0</span>
+          <span id="badgeMutual" class="ml-1 text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">0</span>
         </button>
         <button class="tab-btn text-sm font-semibold pb-3 px-1 text-slate-400 whitespace-nowrap" data-tab="unfollowed">
           Riwayat Unfollow
-          <span id="tabBadgeUnfollowed" class="ml-1 text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">0</span>
+          <span id="badgeUnfollowed" class="ml-1 text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">0</span>
         </button>
       </div>
 
       <div id="tabNotback">
-        <div id="listNotBack" class="grid md:grid-cols-2 gap-2 max-h-[520px] overflow-y-auto scrollbar pr-1"></div>
+        <div id="listNotBack" class="grid md:grid-cols-2 gap-2 max-h-[540px] overflow-y-auto scrollbar pr-1"></div>
       </div>
       <div id="tabMutual" class="hidden">
-        <div id="listMutual" class="grid md:grid-cols-2 gap-2 max-h-[520px] overflow-y-auto scrollbar pr-1"></div>
+        <div id="listMutual" class="grid md:grid-cols-2 gap-2 max-h-[540px] overflow-y-auto scrollbar pr-1"></div>
       </div>
       <div id="tabUnfollowed" class="hidden">
-        <div id="listUnfollowed" class="grid md:grid-cols-2 gap-2 max-h-[520px] overflow-y-auto scrollbar pr-1"></div>
+        <div id="listUnfollowed" class="grid md:grid-cols-2 gap-2 max-h-[540px] overflow-y-auto scrollbar pr-1"></div>
       </div>
 
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="mt-8 text-center text-xs text-slate-600 py-4">
     Made by Vann •
     <a href="https://github.com/ikhvanade/unfollow-ig" target="_blank" class="hover:text-cyan-400 transition ml-1">
@@ -168,304 +159,285 @@ input[type=text]:focus,select:focus{border-color:#ec4899!important;outline:none;
 </div>
 
 <script>
-  let followers = [], following = [], unfollowedList = [];
-  let notBack = [], mutual = [], recentUnfollowed = [];
-  let dark = true;
+// State
+let followersData = []; // { username, ts }
+let followingData = []; // { username, ts }
+let unfollowedData = []; // { username, nama, ts }
+let notBack = [], mutual = [], recentUnfollowed = [];
+let dark = true;
 
-  const $body = document.getElementById("body");
-  const $main = document.getElementById("mainCard");
+const $body = document.getElementById("body");
+const $main = document.getElementById("mainCard");
 
-  // ─── THEME ───────────────────────────────────────────────
-  function applyTheme() {
-    if (dark) {
-      $body.className = "dark min-h-screen";
-      $main.className = "glass-dark rounded-[28px] p-5 md:p-8 fade-up";
-    } else {
-      $body.className = "light min-h-screen";
-      $main.className = "glass-light rounded-[28px] p-5 md:p-8 fade-up";
+// ─── THEME ────────────────────────────────────────────────
+function applyTheme() {
+  $body.className = dark ? "dark min-h-screen" : "light min-h-screen";
+  $main.className = (dark ? "glass-dark" : "glass-light") + " rounded-[28px] p-5 md:p-8 fade-up";
+}
+document.getElementById("themeBtn").addEventListener("click", () => {
+  dark = !dark;
+  document.getElementById("themeBtn").textContent = dark ? "🌙" : "☀️";
+  applyTheme();
+  if (!document.getElementById("resultSection").classList.contains("hidden")) applyFilters();
+});
+
+// ─── PARSER ───────────────────────────────────────────────
+/**
+ * Parse followers_1.json
+ * Format: Array of { string_list_data: [{ value: "username", timestamp: 123 }] }
+ * Username ada di string_list_data[0].VALUE
+ */
+function parseFollowers(json) {
+  if (!Array.isArray(json)) return [];
+  return json.map(item => {
+    const sld = item?.string_list_data?.[0];
+    if (!sld) return null;
+    const username = (sld.value || "").trim().toLowerCase();
+    if (!username) return null;
+    return { username, ts: sld.timestamp || 0 };
+  }).filter(Boolean);
+}
+
+/**
+ * Parse following.json
+ * Format: { relationships_following: [{ title: "username", string_list_data: [{ href: "...", timestamp: 123 }] }] }
+ * Username ada di field TITLE (string_list_data TIDAK punya value di following.json!)
+ */
+function parseFollowing(json) {
+  const items = json?.relationships_following;
+  if (!Array.isArray(items)) return [];
+  return items.map(item => {
+    // Prioritas: title (paling reliable di following.json)
+    let username = (item?.title || "").trim().toLowerCase();
+    // Fallback: extract dari href kalau title kosong
+    if (!username) {
+      const href = item?.string_list_data?.[0]?.href || "";
+      const m = href.match(/instagram\.com\/_?u\/([^/?#\s]+)/i);
+      if (m) username = m[1].toLowerCase();
     }
-  }
+    if (!username) return null;
+    const ts = item?.string_list_data?.[0]?.timestamp || 0;
+    return { username, ts };
+  }).filter(Boolean);
+}
 
-  document.getElementById("themeBtn").addEventListener("click", () => {
-    dark = !dark;
-    document.getElementById("themeBtn").textContent = dark ? "🌙" : "☀️";
-    applyTheme();
-    if (!document.getElementById("resultSection").classList.contains("hidden")) applyFilters();
-  });
+/**
+ * Parse recently_unfollowed_profiles.json
+ * Format: Array of { timestamp, label_values: [{ label: "Nama pengguna", value: "..." }] }
+ */
+function parseUnfollowed(json) {
+  if (!Array.isArray(json)) return [];
+  return json.map(item => {
+    const lv = item.label_values || [];
+    const username = (lv.find(x => x.label === "Nama pengguna")?.value || "").trim().toLowerCase();
+    const nama = lv.find(x => x.label === "Nama")?.value || "";
+    const ts = item.timestamp || 0;
+    return username ? { username, nama, ts } : null;
+  }).filter(Boolean);
+}
 
-  // ─── PARSER UTAMA ─────────────────────────────────────────
-  /**
-   * Extract username dari satu item (object) JSON IG.
-   * IG export punya 2 format berbeda:
-   *   - followers_1.json  → string_list_data[0].value  (ada field "value")
-   *   - following.json    → title  ATAU  href  (TIDAK ada "value", username ada di "title" atau path href)
-   */
-  function extractUsername(item) {
-    if (!item) return null;
+function guessType(filename, json) {
+  const fn = filename.toLowerCase();
+  if (fn.includes("recently_unfollowed")) return "unfollowed";
+  if (fn.includes("follower")) return "followers";
+  if (fn.includes("following")) return "following";
+  // detect by structure
+  if (json?.relationships_following) return "following";
+  if (Array.isArray(json) && json[0]?.label_values) return "unfollowed";
+  if (Array.isArray(json) && json[0]?.string_list_data) return "followers";
+  return "unknown";
+}
 
-    // Format followers: string_list_data[0].value
-    const sld = item.string_list_data;
-    if (Array.isArray(sld) && sld[0]) {
-      // Coba .value dulu (followers format)
-      if (sld[0].value && sld[0].value.trim()) {
-        return sld[0].value.trim().toLowerCase();
+// ─── FILE HANDLING ────────────────────────────────────────
+const dropZone = document.getElementById("dropZone");
+
+document.getElementById("jsonFiles").addEventListener("change", async (e) => {
+  await handleFiles([...e.target.files]);
+  e.target.value = "";
+});
+dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("dragover"); });
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+dropZone.addEventListener("drop", async e => {
+  e.preventDefault(); dropZone.classList.remove("dragover");
+  await handleFiles([...e.dataTransfer.files].filter(f => f.name.endsWith(".json")));
+});
+
+async function handleFiles(files) {
+  document.getElementById("fileList").classList.remove("hidden");
+  for (const file of files) {
+    try {
+      const json = JSON.parse(await file.text());
+      const type = guessType(file.name, json);
+      if (type === "followers") {
+        followersData = parseFollowers(json);
+        addFileCard(file.name, `Followers ✓ — ${followersData.length} akun`, "text-violet-400");
+      } else if (type === "following") {
+        followingData = parseFollowing(json);
+        addFileCard(file.name, `Following ✓ — ${followingData.length} akun`, "text-orange-400");
+      } else if (type === "unfollowed") {
+        unfollowedData = parseUnfollowed(json);
+        addFileCard(file.name, `Riwayat Unfollow ✓ — ${unfollowedData.length} akun`, "text-amber-400");
+      } else {
+        addFileCard(file.name, "Format tidak dikenali ❌", "text-red-400");
       }
-      // Kalau gak ada .value, ambil dari .href (following format)
-      // href = "https://www.instagram.com/_u/USERNAME"
-      if (sld[0].href && sld[0].href.trim()) {
-        const match = sld[0].href.match(/instagram\.com\/_?u\/([^/?#]+)/i);
-        if (match) return match[1].trim().toLowerCase();
-      }
+    } catch (err) {
+      addFileCard(file.name, "Error parsing JSON ❌", "text-red-400");
     }
+  }
+}
 
-    // Fallback: field "title" langsung di root item (following format)
-    if (item.title && item.title.trim()) {
-      return item.title.trim().toLowerCase();
-    }
+function addFileCard(name, label, colorClass) {
+  const div = document.createElement("div");
+  div.className = `${dark ? "card-dark" : "card-light"} rounded-2xl p-4 flex items-center justify-between gap-3 fade-up`;
+  div.innerHTML = `
+    <div class="flex items-center gap-3 min-w-0">
+      <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center flex-shrink-0">
+        <i class="fa-solid fa-file-code text-sm"></i>
+      </div>
+      <div class="min-w-0">
+        <div class="font-semibold text-sm truncate">${name}</div>
+        <div class="text-xs ${colorClass} mt-0.5">${label}</div>
+      </div>
+    </div>
+    <i class="fa-solid fa-check text-green-400 flex-shrink-0"></i>
+  `;
+  document.getElementById("fileList").appendChild(div);
+}
 
-    return null;
+// ─── ANALYZE ──────────────────────────────────────────────
+document.getElementById("analyzeBtn").addEventListener("click", () => {
+  const hasFollow = followersData.length > 0 && followingData.length > 0;
+  const hasUnfollowed = unfollowedData.length > 0;
+
+  if (!hasFollow && !hasUnfollowed) {
+    alert("Upload minimal followers + following, atau file recently_unfollowed dulu ya bro 😭");
+    return;
   }
 
-  function extractUsers(json) {
-    let items = [];
-    // following.json: { relationships_following: [...] }
-    if (json && json.relationships_following) {
-      items = json.relationships_following;
-    }
-    // followers_1.json: [ {...}, {...} ]
-    else if (Array.isArray(json)) {
-      items = json;
-    }
-    return items.map(extractUsername).filter(Boolean);
+  if (hasFollow) {
+    // Set untuk O(1) lookup — akurat & cepat
+    const followerSet = new Set(followersData.map(x => x.username));
+
+    notBack = followingData
+      .filter(x => !followerSet.has(x.username));
+
+    mutual = followingData
+      .filter(x => followerSet.has(x.username));
   }
 
-  function extractUnfollowed(json) {
-    if (!Array.isArray(json)) return [];
-    return json.map(item => {
-      const lv = item.label_values || [];
-      const username = (lv.find(x => x.label === "Nama pengguna")?.value || "").trim().toLowerCase();
-      const nama = lv.find(x => x.label === "Nama")?.value || "";
-      const ts = item.timestamp || 0;
-      return { username, nama, ts };
-    }).filter(x => x.username);
-  }
+  recentUnfollowed = hasUnfollowed ? [...unfollowedData] : [];
 
-  function guessType(filename, json) {
-    const fn = filename.toLowerCase();
-    if (fn.includes("recently_unfollowed")) return "unfollowed";
-    if (fn.includes("follower")) return "followers";
-    if (fn.includes("following")) return "following";
-    // detect by structure
-    if (Array.isArray(json) && json[0]?.label_values) return "unfollowed";
-    if (json?.relationships_following) return "following";
-    if (Array.isArray(json) && json[0]?.string_list_data) return "followers";
-    return "unknown";
-  }
+  // Update stats
+  document.getElementById("cntNotBack").textContent   = notBack.length;
+  document.getElementById("cntMutual").textContent    = mutual.length;
+  document.getElementById("cntFollowers").textContent = followersData.length;
+  document.getElementById("cntFollowing").textContent = followingData.length;
+  document.getElementById("badgeNotBack").textContent    = notBack.length;
+  document.getElementById("badgeMutual").textContent     = mutual.length;
+  document.getElementById("badgeUnfollowed").textContent = recentUnfollowed.length;
 
-  // ─── FILE HANDLING ────────────────────────────────────────
-  const dropZone = document.getElementById("dropZone");
+  document.getElementById("resultSection").classList.remove("hidden");
+  document.getElementById("resultSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  applyFilters();
+});
 
-  document.getElementById("jsonFiles").addEventListener("change", async (e) => {
-    await handleFiles([...e.target.files]);
-    e.target.value = "";
+// ─── FILTER & SORT ────────────────────────────────────────
+document.getElementById("searchInput").addEventListener("input", applyFilters);
+document.getElementById("sortSelect").addEventListener("change", applyFilters);
+
+function sortList(arr, sort) {
+  if (sort === "az")     return [...arr].sort((a, b) => a.username.localeCompare(b.username));
+  if (sort === "za")     return [...arr].sort((a, b) => b.username.localeCompare(a.username));
+  if (sort === "newest") return [...arr].sort((a, b) => b.ts - a.ts);
+  return arr;
+}
+
+function applyFilters() {
+  const search = document.getElementById("searchInput").value.toLowerCase().trim();
+  const sort   = document.getElementById("sortSelect").value;
+
+  const nb = sortList(notBack.filter(x => x.username.includes(search)), sort);
+  const mu = sortList(mutual.filter(x => x.username.includes(search)), sort);
+  const uf = sortList(
+    recentUnfollowed.filter(x => x.username.includes(search) || x.nama.toLowerCase().includes(search)),
+    sort
+  );
+
+  renderList("listNotBack",    nb, "pink");
+  renderList("listMutual",     mu, "cyan");
+  renderUnfollowed("listUnfollowed", uf);
+}
+
+// ─── TABS ─────────────────────────────────────────────────
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => {
+      b.classList.remove("active"); b.classList.add("text-slate-400");
+    });
+    btn.classList.add("active"); btn.classList.remove("text-slate-400");
+    ["tabNotback", "tabMutual", "tabUnfollowed"].forEach(id =>
+      document.getElementById(id).classList.add("hidden")
+    );
+    const id = "tab" + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1);
+    document.getElementById(id).classList.remove("hidden");
   });
+});
 
-  dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("dragover"); });
-  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
-  dropZone.addEventListener("drop", async (e) => {
-    e.preventDefault();
-    dropZone.classList.remove("dragover");
-    await handleFiles([...e.dataTransfer.files].filter(f => f.name.endsWith(".json")));
-  });
+// ─── RENDER ───────────────────────────────────────────────
+function fmtDate(ts) {
+  if (!ts) return "";
+  return new Date(ts * 1000).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+}
 
-  async function handleFiles(files) {
-    const fl = document.getElementById("fileList");
-    fl.classList.remove("hidden");
-    for (const file of files) {
-      try {
-        const text = await file.text();
-        const json = JSON.parse(text);
-        const type = guessType(file.name, json);
-        if (type === "followers") {
-          followers = extractUsers(json);
-          addFileCard(file.name, `Followers ✓ (${followers.length} akun)`, "text-violet-400");
-        } else if (type === "following") {
-          following = extractUsers(json);
-          addFileCard(file.name, `Following ✓ (${following.length} akun)`, "text-orange-400");
-        } else if (type === "unfollowed") {
-          unfollowedList = extractUnfollowed(json);
-          addFileCard(file.name, `Riwayat Unfollow ✓ (${unfollowedList.length} akun)`, "text-amber-400");
-        } else {
-          // last resort
-          const users = extractUsers(json);
-          if (users.length > 0) {
-            following = users;
-            addFileCard(file.name, `Following (auto-detect) ✓ (${users.length} akun)`, "text-orange-400");
-          } else {
-            addFileCard(file.name, "Format tidak dikenali ❌", "text-red-400");
-          }
-        }
-      } catch (err) {
-        console.error(err);
-        addFileCard(file.name, "Error parsing JSON ❌", "text-red-400");
-      }
-    }
+function renderList(elId, items, color) {
+  const el = document.getElementById(elId);
+  if (!items.length) {
+    el.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-500 text-sm">kosong bro 🗿</div>`;
+    return;
   }
-
-  function addFileCard(name, label, colorClass) {
-    const fl = document.getElementById("fileList");
-    const div = document.createElement("div");
-    div.className = `${dark ? "card-dark" : "card-light"} rounded-2xl p-4 flex items-center justify-between gap-3 fade-up`;
-    div.innerHTML = `
+  const ic = dark ? "item-dark" : "item-light";
+  el.innerHTML = items.map((x, i) => `
+    <a href="https://instagram.com/${x.username}" target="_blank" rel="noopener noreferrer"
+       class="${ic} rounded-2xl p-3 flex items-center justify-between gap-3 hover:scale-[1.01] transition fade-up"
+       style="animation-delay:${Math.min(i*0.012, 0.4)}s;text-decoration:none;">
       <div class="flex items-center gap-3 min-w-0">
-        <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center flex-shrink-0">
-          <i class="fa-solid fa-file-code text-sm"></i>
+        <div class="w-10 h-10 rounded-xl bg-${color}-500/10 text-${color}-400 flex items-center justify-center flex-shrink-0">
+          <i class="fa-solid fa-user text-sm"></i>
         </div>
         <div class="min-w-0">
-          <div class="font-semibold text-sm truncate">${name}</div>
-          <div class="text-xs ${colorClass}">${label}</div>
+          <div class="font-semibold text-sm truncate">${x.username}</div>
+          <div class="text-xs text-slate-500 truncate">${x.ts ? "Difollow " + fmtDate(x.ts) : "instagram.com/" + x.username}</div>
         </div>
       </div>
-      <i class="fa-solid fa-check text-green-400 flex-shrink-0"></i>
-    `;
-    fl.appendChild(div);
+      <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 flex-shrink-0"></i>
+    </a>
+  `).join("");
+}
+
+function renderUnfollowed(elId, list) {
+  const el = document.getElementById(elId);
+  if (!list.length) {
+    el.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-500 text-sm">kosong bro 🗿</div>`;
+    return;
   }
-
-  // ─── ANALYZE ──────────────────────────────────────────────
-  document.getElementById("analyzeBtn").addEventListener("click", () => {
-    const hasFollowData = followers.length > 0 && following.length > 0;
-    const hasUnfollowData = unfollowedList.length > 0;
-
-    if (!hasFollowData && !hasUnfollowData) {
-      alert("Upload minimal followers + following, atau file recently_unfollowed dulu ya bro 😭");
-      return;
-    }
-
-    if (hasFollowData) {
-      // pakai Set biar O(1) lookup, jauh lebih cepet buat data besar
-      const followerSet = new Set(followers);
-      notBack = following.filter(u => !followerSet.has(u));
-      mutual  = following.filter(u =>  followerSet.has(u));
-    }
-    if (hasUnfollowData) {
-      recentUnfollowed = [...unfollowedList];
-    }
-
-    document.getElementById("cntNotBack").textContent   = notBack.length;
-    document.getElementById("cntMutual").textContent    = mutual.length;
-    document.getElementById("cntFollowers").textContent = followers.length;
-    document.getElementById("cntFollowing").textContent = following.length;
-    document.getElementById("tabBadgeNotBack").textContent    = notBack.length;
-    document.getElementById("tabBadgeMutual").textContent     = mutual.length;
-    document.getElementById("tabBadgeUnfollowed").textContent = recentUnfollowed.length;
-
-    document.getElementById("resultSection").classList.remove("hidden");
-    document.getElementById("resultSection").scrollIntoView({ behavior: "smooth", block: "start" });
-    applyFilters();
-  });
-
-  // ─── FILTER & SORT ────────────────────────────────────────
-  document.getElementById("searchInput").addEventListener("input", applyFilters);
-  document.getElementById("sortSelect").addEventListener("change", applyFilters);
-
-  function applyFilters() {
-    const search = document.getElementById("searchInput").value.toLowerCase();
-    const sort   = document.getElementById("sortSelect").value;
-
-    let nb = notBack.filter(u => u.includes(search));
-    let mu = mutual.filter(u => u.includes(search));
-    let uf = recentUnfollowed.filter(u =>
-      u.username.includes(search) || (u.nama && u.nama.toLowerCase().includes(search))
-    );
-
-    if (sort === "az") {
-      nb.sort(); mu.sort();
-      uf.sort((a, b) => a.username.localeCompare(b.username));
-    } else if (sort === "za") {
-      nb.sort().reverse(); mu.sort().reverse();
-      uf.sort((a, b) => b.username.localeCompare(a.username));
-    } else if (sort === "newest") {
-      uf.sort((a, b) => b.ts - a.ts);
-    }
-
-    renderList("listNotBack",    nb, "pink");
-    renderList("listMutual",     mu, "cyan");
-    renderUnfollowed("listUnfollowed", uf);
-  }
-
-  // ─── TABS ─────────────────────────────────────────────────
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab-btn").forEach(b => {
-        b.classList.remove("active");
-        b.classList.add("text-slate-400");
-      });
-      btn.classList.add("active");
-      btn.classList.remove("text-slate-400");
-      ["tabNotback", "tabMutual", "tabUnfollowed"].forEach(id =>
-        document.getElementById(id).classList.add("hidden")
-      );
-      const id = "tab" + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1);
-      document.getElementById(id).classList.remove("hidden");
-      applyFilters();
-    });
-  });
-
-  // ─── RENDER ───────────────────────────────────────────────
-  function renderList(elId, users, color) {
-    const el = document.getElementById(elId);
-    if (!users.length) {
-      el.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-500 text-sm">kosong bro 🗿</div>`;
-      return;
-    }
-    const ic = dark ? "item-dark" : "item-light";
-    el.innerHTML = users.map((u, i) => `
-      <a href="https://instagram.com/${u}" target="_blank" rel="noopener noreferrer"
-         class="${ic} rounded-2xl p-3 flex items-center justify-between gap-3 hover:scale-[1.01] transition fade-up"
-         style="animation-delay:${Math.min(i * 0.015, 0.5)}s; text-decoration:none;">
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 rounded-xl bg-${color}-500/10 text-${color}-400 flex items-center justify-center flex-shrink-0 text-sm">
-            <i class="fa-solid fa-user"></i>
-          </div>
-          <div class="min-w-0">
-            <div class="font-semibold text-sm truncate">${u}</div>
-            <div class="text-xs text-slate-500 truncate">instagram.com/${u}</div>
-          </div>
+  const ic = dark ? "item-dark" : "item-light";
+  el.innerHTML = list.map((u, i) => `
+    <a href="https://instagram.com/${u.username}" target="_blank" rel="noopener noreferrer"
+       class="${ic} rounded-2xl p-3 flex items-center justify-between gap-3 hover:scale-[1.01] transition fade-up"
+       style="animation-delay:${Math.min(i*0.012, 0.4)}s;text-decoration:none;">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center flex-shrink-0">
+          <i class="fa-solid fa-user-minus text-sm"></i>
         </div>
-        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 flex-shrink-0"></i>
-      </a>
-    `).join("");
-  }
-
-  function renderUnfollowed(elId, list) {
-    const el = document.getElementById(elId);
-    if (!list.length) {
-      el.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-500 text-sm">kosong bro 🗿</div>`;
-      return;
-    }
-    const ic = dark ? "item-dark" : "item-light";
-    el.innerHTML = list.map((u, i) => {
-      const d = u.ts
-        ? new Date(u.ts * 1000).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" })
-        : "—";
-      return `
-        <a href="https://instagram.com/${u.username}" target="_blank" rel="noopener noreferrer"
-           class="${ic} rounded-2xl p-3 flex items-center justify-between gap-3 hover:scale-[1.01] transition fade-up"
-           style="animation-delay:${Math.min(i * 0.015, 0.5)}s; text-decoration:none;">
-          <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center flex-shrink-0 text-sm">
-              <i class="fa-solid fa-user-minus"></i>
-            </div>
-            <div class="min-w-0">
-              <div class="font-semibold text-sm truncate">${u.username}</div>
-              <div class="text-xs text-slate-500 truncate">${u.nama || "—"} · ${d}</div>
-            </div>
-          </div>
-          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 flex-shrink-0"></i>
-        </a>
-      `;
-    }).join("");
-  }
+        <div class="min-w-0">
+          <div class="font-semibold text-sm truncate">${u.username}</div>
+          <div class="text-xs text-slate-500 truncate">${u.nama || "—"} · ${fmtDate(u.ts)}</div>
+        </div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 flex-shrink-0"></i>
+    </a>
+  `).join("");
+}
 </script>
 </body>
 </html>
