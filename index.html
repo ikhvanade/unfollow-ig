@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>IG Unfollow Checker</title>
+  <link
+  rel="icon"
+  type="image/png"
+  href="https://cdn-icons-png.flaticon.com/512/2706/2706828.png"
+/>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <style>
+
+    * {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+      transition:
+        background .3s ease,
+        color .3s ease;
+    }
+
+    body.dark-mode {
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%),
+        #0f1115;
+      color: white;
+    }
+
+    body.light-mode {
+      background:
+        radial-gradient(circle at top, rgba(0,0,0,.03), transparent 30%),
+        #f5f7fb;
+      color: #0f172a;
+    }
+
+    .glass {
+      background: rgba(20,20,20,.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+    }
+
+    body.light-mode .glass {
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .fade-up {
+      animation: fadeUp .4s ease;
+    }
+
+    @keyframes fadeUp {
+
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 999px;
+    }
+
+  </style>
+</head>
+
+<body id="body" class="dark-mode min-h-screen">
+
+  <div class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- HEADER -->
+    <header class="relative mb-12 fade-up">
+
+    <!-- THEME TOGGLE -->
+    <button
+        id="themeToggle"    
+        class="
+        absolute
+        top-0
+        right-0
+        w-12 h-12
+        rounded-2xl
+        bg-white/5
+        border border-white/10
+        hover:scale-105
+        transition
+        text-xl
+        backdrop-blur-md
+        shadow-lg shadow-black/20
+        "
+    >
+        🌙
+    </button>
+
+    <!-- TITLE -->
+    <div class="flex items-center justify-center gap-4">
+
+        <!-- LOGO -->
+        <div
+        class="
+            w-14 h-14
+            rounded-2xl
+            bg-gradient-to-br
+            from-pink-500
+            to-purple-600
+            flex
+            items-center
+            justify-center
+            shadow-lg shadow-pink-500/30
+        "
+        >
+        <i class="fa-solid fa-user-group text-white text-2xl"></i>
+        </div>
+
+        <div>
+
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+            IG Unfollow Checker
+        </h1>
+
+        </div>
+
+    </div>
+
+    </header>
+
+    <!-- MAIN -->
+    <main class="glass rounded-[32px] p-6 md:p-10 fade-up">
+
+      <!-- HERO -->
+      <section class="grid lg:grid-cols-2 gap-12 items-center">
+
+        <!-- LEFT -->
+        <div class="max-w-xl">
+
+          <div
+            class="
+              inline-flex
+              items-center
+              gap-2
+              bg-pink-500/10
+              text-pink-400
+              px-4 py-2
+              rounded-full
+              text-sm
+              font-medium
+              mb-5
+            "
+          >
+            <i class="fa-solid fa-chart-simple"></i>
+            Instagram Analytics
+          </div>
+
+          <h2
+            class="
+                text-4xl
+                md:text-5xl
+                font-black
+                leading-tight
+            "
+            >
+            Cari siapa yang gak follow balik yuk! 👀
+            </h2>
+
+          <p
+            class="
+              mt-5
+              text-slate-400
+              leading-relaxed
+            "
+          >
+            Upload file JSON followers dan following
+            hasil export data Instagram.
+            Sistem bakal otomatis analisa akun
+            mutual dan unfollowers secara instan.
+          </p>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="w-full max-w-md mx-auto">
+
+          <label class="block cursor-pointer">
+
+            <div
+              class="
+                dark:bg-[#17191f]
+                bg-white
+                border
+                dark:border-white/5
+                border-black/5
+                rounded-[32px]
+                p-8 md:p-10
+                text-center
+                transition
+                hover:scale-[1.01]
+                shadow-xl
+              "
+            >
+
+              <!-- ICON -->
+              <div class="relative w-fit mx-auto mb-6">
+
+                <div
+                  class="
+                    absolute
+                    inset-0
+                    bg-pink-500/20
+                    blur-2xl
+                    rounded-full
+                  "
+                ></div>
+
+                <div
+                  class="
+                    relative
+                    w-24 h-24
+                    rounded-[28px]
+                    bg-gradient-to-br
+                    from-pink-500
+                    to-purple-600
+                    flex
+                    items-center
+                    justify-center
+                    text-4xl
+                    text-white
+                  "
+                >
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+
+              </div>
+
+              <h3 class="text-2xl font-bold mb-3">
+                Upload JSON
+              </h3>
+
+              <p
+                class="
+                  text-slate-400
+                  text-sm
+                  leading-relaxed
+                  mb-7
+                "
+              >
+                Multiple files supported
+              </p>
+
+              <!-- BUTTON -->
+              <div
+                class="
+                  inline-flex
+                  items-center
+                  gap-2
+                  bg-black
+                  text-white
+                  dark:bg-white
+                  dark:text-black
+                  px-6 py-3
+                  rounded-2xl
+                  font-semibold
+                  hover:scale-105
+                  transition
+                "
+              >
+                <i class="fa-solid fa-folder-open"></i>
+                Pilih File
+              </div>
+
+              <!-- INPUT -->
+              <input
+                type="file"
+                id="jsonFiles"
+                accept=".json"
+                multiple
+                class="hidden"
+              />
+
+              <div class="mt-6 text-xs text-slate-500">
+                JSON only
+              </div>
+
+            </div>
+
+          </label>
+
+        </div>
+
+      </section>
+
+      <!-- FILE STATUS -->
+      <section
+        id="uploadStatus"
+        class="hidden mt-10 fade-up"
+      >
+
+        <div
+          id="fileList"
+          class="grid md:grid-cols-2 gap-4"
+        ></div>
+
+      </section>
+
+      <!-- ANALYZE BUTTON -->
+      <button
+        id="analyzeBtn"
+        class="
+        mt-8
+        w-full
+        bg-black
+        text-white
+        dark:bg-white
+        dark:text-black
+        py-4
+        rounded-2xl
+        text-lg
+        font-bold
+        hover:scale-[1.01]
+        active:scale-[.99]
+        transition
+        shadow-2xl
+        shadow-pink-500/20
+        border
+        border-white/10
+        "
+      >
+        Analisa Sekarang
+      </button>
+
+      <!-- RESULT -->
+      <section
+        id="resultSection"
+        class="hidden mt-10 fade-up"
+      >
+
+        <!-- STATS -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+
+          <div class="bg-pink-500/10 border border-pink-500/10 rounded-3xl p-5">
+            <div class="text-sm text-slate-400 mb-2">
+              Tidak Follow Balik
+            </div>
+
+            <div
+              id="notBackCount"
+              class="text-3xl font-black text-pink-400"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="bg-cyan-500/10 border border-cyan-500/10 rounded-3xl p-5">
+            <div class="text-sm text-slate-400 mb-2">
+              Mutual
+            </div>
+
+            <div
+              id="mutualCount"
+              class="text-3xl font-black text-cyan-400"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="bg-violet-500/10 border border-violet-500/10 rounded-3xl p-5">
+            <div class="text-sm text-slate-400 mb-2">
+              Followers
+            </div>
+
+            <div
+              id="followersCount"
+              class="text-3xl font-black text-violet-400"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="bg-orange-500/10 border border-orange-500/10 rounded-3xl p-5">
+            <div class="text-sm text-slate-400 mb-2">
+              Following
+            </div>
+
+            <div
+              id="followingCount"
+              class="text-3xl font-black text-orange-400"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FILTER -->
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari username..."
+            class="
+              flex-1
+              dark:bg-[#17191f]
+              bg-white
+              border
+              dark:border-white/5
+              border-black/5
+              rounded-2xl
+              px-5 py-4
+              outline-none
+              focus:border-pink-500
+            "
+          />
+
+          <select
+            id="sortSelect"
+            class="
+              dark:bg-[#17191f]
+              bg-white
+              border
+              dark:border-white/5
+              border-black/5
+              rounded-2xl
+              px-5 py-4
+              outline-none
+              focus:border-pink-500
+            "
+          >
+            <option value="az">Sort A-Z</option>
+            <option value="za">Sort Z-A</option>
+          </select>
+
+        </div>
+
+        <!-- LIST -->
+        <div class="grid lg:grid-cols-2 gap-6">
+
+          <!-- UNFOLLOW -->
+          <div
+            class="
+              dark:bg-[#17191f]
+              bg-white
+              border
+              dark:border-white/5
+              border-black/5
+              rounded-[28px]
+              overflow-hidden
+            "
+          >
+
+            <div
+              class="
+                p-5
+                border-b
+                border-black/5
+                dark:border-white/5
+              "
+            >
+
+              <h3 class="text-xl font-bold text-pink-400">
+                Tidak Follow Balik
+              </h3>
+
+              <p class="text-sm text-slate-500 mt-1">
+                Orang yang kamu follow
+                tapi mereka gak follow balik
+              </p>
+
+            </div>
+
+            <div
+              id="notFollowingBackList"
+              class="
+                max-h-[600px]
+                overflow-y-auto
+                p-4
+                space-y-3
+              "
+            ></div>
+
+          </div>
+
+          <!-- MUTUAL -->
+          <div
+            class="
+              dark:bg-[#17191f]
+              bg-white
+              border
+              dark:border-white/5
+              border-black/5
+              rounded-[28px]
+              overflow-hidden
+            "
+          >
+
+            <div
+              class="
+                p-5
+                border-b
+                border-black/5
+                dark:border-white/5
+              "
+            >
+
+              <h3 class="text-xl font-bold text-cyan-400">
+                Mutual
+              </h3>
+
+              <p class="text-sm text-slate-500 mt-1">
+                Saling follow satu sama lain
+              </p>
+
+            </div>
+
+            <div
+              id="mutualList"
+              class="
+                max-h-[600px]
+                overflow-y-auto
+                p-4
+                space-y-3
+              "
+            ></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+      class="
+        mt-12
+        glass
+        rounded-3xl
+        px-6
+        py-5
+        text-center
+        text-sm
+        text-slate-400
+        fade-up
+      "
+    >
+
+      <p class="mb-3">
+        Made by Vann • IG Unfollow Checker
+      </p>
+
+      <div class="flex justify-center gap-5 text-lg">
+        <a
+            href="https://github.com/ikhvanade/unfollow-ig"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-cyan-400 transition"
+        >
+            <i class="fa-brands fa-github"></i>
+        </a>
+
+        </div>
+
+    </footer>
+
+  </div>
+
+  <script>
+
+    let followers = [];
+    let following = [];
+
+    let notFollowingBack = [];
+    let mutual = [];
+
+    // THEME
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.getElementById("body");
+
+    let dark = true;
+
+    themeToggle.addEventListener("click", () => {
+
+      dark = !dark;
+
+      body.classList.toggle("dark-mode");
+      body.classList.toggle("light-mode");
+
+      themeToggle.innerHTML = dark
+        ? "🌙"
+        : "☀️";
+
+    });
+
+    // FILE UPLOAD
+    document
+      .getElementById("jsonFiles")
+      .addEventListener("change", async (event) => {
+
+      followers = [];
+      following = [];
+
+      const files = [...event.target.files];
+
+      document
+        .getElementById("uploadStatus")
+        .classList.remove("hidden");
+
+      document.getElementById("fileList").innerHTML = "";
+
+      for (const file of files) {
+
+        try {
+
+          const text = await file.text();
+          const json = JSON.parse(text);
+
+          // FOLLOWERS
+          if (
+            Array.isArray(json) &&
+            json[0]?.string_list_data
+          ) {
+
+            followers = json.map(item =>
+              item.string_list_data[0].value.toLowerCase()
+            );
+
+            renderFile(file.name, "Followers");
+
+          }
+
+          // FOLLOWING
+          if (json.relationships_following) {
+
+            following = json.relationships_following.map(item =>
+              item.string_list_data[0].value.toLowerCase()
+            );
+
+            renderFile(file.name, "Following");
+
+          }
+
+        } catch (err) {
+
+          renderFile(file.name, "Error ❌");
+
+        }
+
+      }
+
+    });
+
+    // FILE CARD
+    function renderFile(name, type) {
+
+      document.getElementById("fileList").innerHTML += `
+
+        <div
+          class="
+            dark:bg-[#17191f]
+            bg-white
+            border
+            dark:border-white/5
+            border-black/5
+            rounded-[24px]
+            p-5
+            flex items-center justify-between
+            fade-up
+          "
+        >
+
+          <div class="flex items-center gap-4">
+
+            <div
+              class="
+                w-14 h-14
+                rounded-2xl
+                bg-pink-500/10
+                text-pink-400
+                flex
+                items-center
+                justify-center
+                text-xl
+              "
+            >
+              <i class="fa-solid fa-file"></i>
+            </div>
+
+            <div>
+
+              <div class="font-bold">
+                ${name}
+              </div>
+
+              <div class="text-sm text-slate-500">
+                ${type}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="text-green-400">
+            ✓
+          </div>
+
+        </div>
+
+      `;
+    }
+
+    // ANALYZE
+    document
+      .getElementById("analyzeBtn")
+      .addEventListener("click", () => {
+
+      if (
+        followers.length === 0 ||
+        following.length === 0
+      ) {
+
+        alert("Upload followers & following dulu bro 😭");
+        return;
+
+      }
+
+      notFollowingBack = following.filter(user =>
+        !followers.includes(user)
+      );
+
+      mutual = following.filter(user =>
+        followers.includes(user)
+      );
+
+      updateStats();
+      applyFilters();
+
+      document
+        .getElementById("resultSection")
+        .classList.remove("hidden");
+
+    });
+
+    // SEARCH
+    document
+      .getElementById("searchInput")
+      .addEventListener("input", applyFilters);
+
+    // SORT
+    document
+      .getElementById("sortSelect")
+      .addEventListener("change", applyFilters);
+
+    function applyFilters() {
+
+      const search = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+      const sort = document
+        .getElementById("sortSelect")
+        .value;
+
+      let filteredNotBack = [...notFollowingBack];
+      let filteredMutual = [...mutual];
+
+      filteredNotBack = filteredNotBack.filter(user =>
+        user.includes(search)
+      );
+
+      filteredMutual = filteredMutual.filter(user =>
+        user.includes(search)
+      );
+
+      if (sort === "az") {
+
+        filteredNotBack.sort();
+        filteredMutual.sort();
+
+      } else {
+
+        filteredNotBack.sort().reverse();
+        filteredMutual.sort().reverse();
+
+      }
+
+      renderUsers(
+        "notFollowingBackList",
+        filteredNotBack,
+        "pink"
+      );
+
+      renderUsers(
+        "mutualList",
+        filteredMutual,
+        "cyan"
+      );
+
+    }
+
+    // STATS
+    function updateStats() {
+
+      document.getElementById("notBackCount")
+        .textContent = notFollowingBack.length;
+
+      document.getElementById("mutualCount")
+        .textContent = mutual.length;
+
+      document.getElementById("followersCount")
+        .textContent = followers.length;
+
+      document.getElementById("followingCount")
+        .textContent = following.length;
+
+    }
+
+    // USER CARD
+    function renderUsers(elementId, users, color) {
+
+      const container = document.getElementById(elementId);
+
+      if (users.length === 0) {
+
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-500">
+            kosong bro 🗿
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML = users.map((user, index) => `
+
+        <a
+          href="https://instagram.com/${user}"
+          target="_blank"
+          class="
+            dark:bg-[#1d2129]
+            bg-[#f8fafc]
+            hover:scale-[1.01]
+            border
+            dark:border-white/5
+            border-black/5
+            rounded-[24px]
+            p-4
+            flex items-center justify-between
+            transition
+            fade-up
+          "
+          style="animation-delay:${index * 0.02}s"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <div
+              class="
+                w-14 h-14
+                rounded-2xl
+                bg-${color}-500/10
+                text-${color}-400
+                flex
+                items-center
+                justify-center
+                text-xl
+              "
+            >
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+
+              <div class="font-bold">
+                ${user}
+              </div>
+
+              <div class="text-sm text-slate-500">
+                instagram.com/${user}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="text-slate-500">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </div>
+
+        </a>
+
+      `).join("");
+
+    }
+
+  </script>
+
+</body>
+</html>
