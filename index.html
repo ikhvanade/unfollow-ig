@@ -642,17 +642,23 @@
 
           // FOLLOWERS
           if (
-            Array.isArray(json) &&
-            (
-              json[0]?.string_list_data ||
-              file.name.toLowerCase().includes("followers")
-            )
-          ) 
-          {
+            file.name.toLowerCase().includes("followers")
+          ) {
 
-            followers = json.map(item =>
-              item.string_list_data[0].value.toLowerCase()
-            );
+            let followersData = [];
+
+            // FORMAT ARRAY
+            if (Array.isArray(json)) {
+
+              followersData = json;
+
+            }
+
+            followers = followersData
+              .map(item =>
+                item?.string_list_data?.[0]?.value?.toLowerCase()
+              )
+              .filter(Boolean);
 
             renderFile(file.name, "Followers");
 
@@ -660,22 +666,38 @@
 
           // FOLLOWING
           if (
-            json.relationships_following ||
             file.name.toLowerCase().includes("following")
           ) {
 
-            const followingData =
-              json.relationships_following || json;
+            let followingData = [];
 
-            following = followingData.map(item =>
-              item.string_list_data?.[0]?.value?.toLowerCase()
-            ).filter(Boolean);
+            // FORMAT OBJECT
+            if (json.relationships_following) {
+
+              followingData = json.relationships_following;
+
+            }
+
+            // FORMAT ARRAY
+            else if (Array.isArray(json)) {
+
+              followingData = json;
+
+            }
+
+            following = followingData
+              .map(item =>
+                item?.string_list_data?.[0]?.value?.toLowerCase()
+              )
+              .filter(Boolean);
 
             renderFile(file.name, "Following");
 
           }
 
         } catch (err) {
+
+          console.log(err);
 
           renderFile(file.name, "Error ❌");
 
