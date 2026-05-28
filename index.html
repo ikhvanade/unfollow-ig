@@ -643,8 +643,12 @@
           // FOLLOWERS
           if (
             Array.isArray(json) &&
-            json[0]?.string_list_data
-          ) {
+            (
+              json[0]?.string_list_data ||
+              file.name.toLowerCase().includes("followers")
+            )
+          ) 
+          {
 
             followers = json.map(item =>
               item.string_list_data[0].value.toLowerCase()
@@ -655,11 +659,17 @@
           }
 
           // FOLLOWING
-          if (json.relationships_following) {
+          if (
+            json.relationships_following ||
+            file.name.toLowerCase().includes("following")
+          ) {
 
-            following = json.relationships_following.map(item =>
-              item.string_list_data[0].value.toLowerCase()
-            );
+            const followingData =
+              json.relationships_following || json;
+
+            following = followingData.map(item =>
+              item.string_list_data?.[0]?.value?.toLowerCase()
+            ).filter(Boolean);
 
             renderFile(file.name, "Following");
 
