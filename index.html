@@ -950,7 +950,83 @@
       `).join("");
 
     }
+    // USER CARD
+    function renderUsers(elementId, users, color) {
 
+      const container = document.getElementById(elementId);
+
+      if (users.length === 0) {
+
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-500">
+            kosong bro 🗿
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML = users.map((user, index) => `
+
+        <a
+          href="https://instagram.com/${user}"
+          target="_blank"
+          class="
+            dark:bg-[#1d2129]
+            bg-[#f8fafc]
+            hover:scale-[1.01]
+            border
+            dark:border-white/5
+            border-black/5
+            rounded-[24px]
+            p-4
+            flex items-center justify-between
+            transition
+            fade-up
+          "
+          style="animation-delay:${index * 0.02}s"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <div
+              class="
+                w-14 h-14
+                rounded-2xl
+                bg-${color}-500/10
+                text-${color}-400
+                flex
+                items-center
+                justify-center
+                text-xl
+              "
+            >
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+
+              <div class="font-bold">
+                ${user}
+              </div>
+
+              <div class="text-sm text-slate-500">
+                instagram.com/${user}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="text-slate-500">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </div>
+
+        </a>
+
+      `).join("");
+
+    }
   </script>
 
 </body>
